@@ -183,7 +183,7 @@ data = {"city":{"value":city},
         "high":{"value":high,"color":get_random_color()}, # 女方天气高温
         "lucky":{"value":lucky(),"color":get_random_color()}, # 女方星座
         "birthday_left":{"value":get_birthday(),"color":get_random_color()}, # 女方生日
-         "birthday_left2":{"value":get_birthday2(),"color":get_random_color()}, # 男方生日
+
 
         "love_days":{"value":get_count(),"color":get_random_color()}, # 恋爱日
         "words":{"value":get_words(), "color":get_random_color()} #彩虹屁
