@@ -9,17 +9,12 @@ import random
 app_id = os.environ["APP_ID"]
 app_secret = os.environ["APP_SECRET"]
 template_id = os.environ["TEMPLATE_ID"]
-template_id2 = os.environ["TEMPLATE_ID2"]
 today = datetime.now()
 start_date = os.environ['START_DATE']
 city = os.environ['CITY']
-city2 = os.environ['CITY2']
 birthday = os.environ['BIRTHDAY']
-birthday2 = os.environ['BIRTHDAY2']
 astro = os.environ["ASTRO"]
-astro2 = os.environ["ASTRO2"]
 user_id = os.environ["USER_ID"]
-user_id2 = os.environ["USER_ID2"]
 
 api_key_lucky = os.environ["API_KEY_LUCKY"]
 
