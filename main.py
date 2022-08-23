@@ -73,19 +73,19 @@ def health():
         return ""
 
 #星座运势
-# def lucky():
-#     if (API_KEY_LUCKY!="否"):
-#         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
-#         params = urllib.parse.urlencode({'key':API_KEY_LUCKY,'astro':astro})
-#         headers = {'Content-type':'application/x-www-form-urlencoded'}
-#         conn.request('POST','/star/index',params,headers)
-#         res = conn.getresponse()
-#         data = res.read()
-#         data = json.loads(data)
-#         data = "\n爱情指数："+str(data["newslist"][1]["content"])+"   工作指数："+str(data["newslist"][2]["content"])+"\n今日概述："+str(data["newslist"][8]["content"])
-#         return data
-#     else:
-#         return ""
+def lucky():
+     if (API_KEY_LUCKY!="否"):
+         conn = http.client.HTTPSConnection('api.tianapi.com')  #接口域名
+         params = urllib.parse.urlencode({'key':API_KEY_LUCKY,'astro':astro})
+         headers = {'Content-type':'application/x-www-form-urlencoded'}
+         conn.request('POST','/star/index',params,headers)
+         res = conn.getresponse()
+         data = res.read()
+        data = json.loads(data)
+        data = "\n爱情指数："+str(data["newslist"][1]["content"])+"   工作指数："+str(data["newslist"][2]["content"])+"\n今日概述："+str(data["newslist"][8]["content"])
+         return data
+     else:
+         return ""
 
 def week(a):
     if a==0:data = "一"
@@ -99,12 +99,6 @@ def week(a):
 
 def lucky(): # 女方星座
   url = "http://api.tianapi.com/star/index?key=" + api_key_lucky +"&astro="+astro
-  res = requests.get(url).json()
-  data = "\n爱情指数："+str(res["newslist"][1]["content"])+"   工作指数："+str(res["newslist"][2]["content"])+"\n财运指数："+str(res["newslist"][3]["content"])+"   健康指数："+str(res["newslist"][4]["content"])+"\n今日概述："+str(res["newslist"][8]["content"])
-  return data
-
-def lucky2(): # 男方星座
-  url = "http://api.tianapi.com/star/index?key=" + api_key_lucky +"&astro="+astro2
   res = requests.get(url).json()
   data = "\n爱情指数："+str(res["newslist"][1]["content"])+"   工作指数："+str(res["newslist"][2]["content"])+"\n财运指数："+str(res["newslist"][3]["content"])+"   健康指数："+str(res["newslist"][4]["content"])+"\n今日概述："+str(res["newslist"][8]["content"])
   return data
@@ -157,13 +151,6 @@ def get_weather(): # 女方天气
   weather = res['data']['list'][0]
   dates = weather['date']
   return weather['weather'], math.floor(weather['temp']),math.floor(weather['low']),math.floor(weather['high']),dates,weather['wind']
-
-def get_weather2(): #男方天气
-  url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city2
-  res = requests.get(url).json()
-  weather = res['data']['list'][0]
-  dates = weather['date']
-  return weather['weather'], math.floor(weather['temp']),math.floor(weather['low']),math.floor(weather['high']),dates,weather['wind']
  
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
@@ -171,12 +158,6 @@ def get_count():
 
 def get_birthday():
   next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
-  if next < datetime.now():
-    next = next.replace(year=next.year + 1)
-  return (next - today).days + 1
-
-def get_birthday2():
-  next = datetime.strptime(str(date.today().year) + "-" + birthday2, "%Y-%m-%d")
   if next < datetime.now():
     next = next.replace(year=next.year + 1)
   return (next - today).days + 1
@@ -195,7 +176,6 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea,temperature,low,high,dates,wind = get_weather()
-wea2,temperature2,low2,high2,dates2,wind2 = get_weather2()
 week_math = datetime.strptime(dates,"%Y-%m-%d").weekday()
 data = {"city":{"value":city},
         "today":{"value":dates + " 星期" + week(week_math)}, #今天日期
@@ -212,25 +192,7 @@ data = {"city":{"value":city},
         "love_days":{"value":get_count(),"color":get_random_color()}, # 恋爱日
         "words":{"value":get_words(), "color":get_random_color()} #彩虹屁
 }
-data2 = {"city":{"value":city2},
-        "today":{"value":dates + " 星期" + week(week_math)}, #今天日期
-        
-
-        
-        "weather2":{"value":wea2,"color":get_random_color()}, # 男方天气
-        "wind2":{"value":wind2,"color":get_random_color()}, # 男方天气风级
-        "temperature2":{"value":temperature2,"color":get_random_color()}, # 男方天气气温
-        "low2":{"value":low2,"color":get_random_color()}, # 男方天气低温
-        "high2":{"value":high2,"color":get_random_color()}, # 男方天气高温
-        "birthday_left2":{"value":get_birthday2(),"color":get_random_color()}, # 男方生日
-         "birthday_left":{"value":get_birthday(),"color":get_random_color()}, # 女方生日
-        "lucky2":{"value":lucky2(),"color":get_random_color()},  # 男方星座
-        "love_days":{"value":get_count(),"color":get_random_color()}, # 恋爱日
-        "words":{"value":get_words(), "color":get_random_color()} #彩虹屁
-}
 
 
 res = wm.send_template(user_id, template_id, data)
-res2 = wm.send_template(user_id2, template_id2, data2)
 print(res)
-print(res2)
